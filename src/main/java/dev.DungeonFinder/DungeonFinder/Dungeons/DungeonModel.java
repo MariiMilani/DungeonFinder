@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.List;
 public class DungeonModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int idDungeon;
+    Long id;
 
     private String name;
 
@@ -31,5 +32,13 @@ public class DungeonModel {
 
     @OneToMany(mappedBy = "dungeon")
     @JsonIgnore
-    private List<PlayersModel> players;
+    private List<PlayersModel> players = new ArrayList<>();
+
+    public int qtdPlayers (){
+        return players.size();
+    }
+
+    public int lvlRequired (){
+        return getMinimumLvl();
+    }
 }
