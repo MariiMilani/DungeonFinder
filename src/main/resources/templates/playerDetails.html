@@ -1,0 +1,415 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores WoW (consistentes com o tema anterior) */
+        :root {
+            --wow-gold: #c8aa6e;
+            --wow-gold-dark: #8a6b3f;
+            --wow-gold-light: #e6d3a7;
+            --wow-blue: #0d5675;
+            --wow-red: #a52a2a;
+            --wow-dark: #0a0a0a;
+            --wow-darker: #050505;
+            --wow-brown: #1e1309;
+            --wow-bg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23050505"/><path d="M0 50 Q 25 30, 50 50 T 100 50 L100 100 L0 100 Z" fill="%230c0c0c" opacity="0.3"/><path d="M0 30 Q 25 10, 50 30 T 100 30 L100 100 L0 100 Z" fill="%230c0c0c" opacity="0.2"/></svg>');
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--wow-dark);
+            background-image: var(--wow-bg);
+            background-size: cover;
+            color: var(--wow-gold-light);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            padding: 30px 20px;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(10, 10, 10, 0.9) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1) 0%, rgba(0, 0, 139, 0.1) 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Cabeçalho principal */
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: 3.5rem;
+            color: var(--wow-gold);
+            text-shadow: 0 0 10px rgba(200, 170, 110, 0.5),
+                         3px 3px 3px rgba(0, 0, 0, 0.8);
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            position: relative;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--wow-gold-dark);
+            animation: glow 3s infinite alternate;
+        }
+
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--wow-gold), transparent);
+            border-radius: 50%;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(200, 170, 110, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.8); }
+            100% { text-shadow: 0 0 20px rgba(200, 170, 110, 0.8), 3px 3px 5px rgba(0, 0, 0, 0.8); }
+        }
+
+        /* Container principal */
+        body > div {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(20, 12, 4, 0.7);
+            border-radius: 8px;
+            border: 2px solid var(--wow-gold-dark);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body > div::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, transparent, var(--wow-gold), transparent);
+            box-shadow: 0 0 10px var(--wow-gold);
+            z-index: 1;
+        }
+
+        body > div::after {
+            content: "\f6d9";
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 2rem;
+            color: var(--wow-gold);
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        /* Nome do personagem */
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: var(--wow-gold);
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--wow-gold), transparent);
+        }
+
+        /* Detalhes do personagem */
+        p {
+            font-size: 1.2rem;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        strong {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            color: var(--wow-gold);
+            min-width: 120px;
+            display: inline-block;
+        }
+
+        span {
+            background: rgba(10, 10, 10, 0.4);
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: 1px solid var(--wow-gold-dark);
+            flex-grow: 1;
+        }
+
+        /* Cabeçalho da seção de dungeon */
+        h3 {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--wow-gold);
+            margin: 40px 0 20px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--wow-gold), transparent);
+        }
+
+        /* Tabela de detalhes da dungeon */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(15, 10, 3, 0.5);
+            position: relative;
+            margin: 20px 0;
+            overflow: hidden;
+            border-radius: 6px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--wow-gold-dark);
+        }
+
+        thead {
+            background: linear-gradient(to bottom, var(--wow-gold-dark), var(--wow-brown));
+            border-bottom: 2px solid var(--wow-gold);
+        }
+
+        th {
+            padding: 15px 10px;
+            text-align: left;
+            color: var(--wow-gold-light);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        th:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 10%;
+            height: 80%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--wow-gold), transparent);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(138, 107, 63, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(138, 107, 63, 0.15);
+        }
+
+        td {
+            padding: 12px 10px;
+            color: var(--wow-gold-light);
+            position: relative;
+        }
+
+        /* Botão de voltar */
+        body > a {
+            display: inline-block;
+            padding: 14px 30px;
+            background: linear-gradient(to bottom, var(--wow-blue), #083d54);
+            color: var(--wow-gold-light) !important;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5),
+                        0 0 10px rgba(13, 86, 117, 0.3) inset;
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            font-size: 1.1rem;
+        }
+
+        body > a:hover {
+            background: linear-gradient(to bottom, #0f6e97, var(--wow-blue));
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6),
+                        0 0 15px rgba(13, 86, 117, 0.5) inset;
+            transform: translateY(-2px);
+        }
+
+        body > a:active {
+            transform: translateY(1px);
+        }
+
+        body > a::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.5s;
+        }
+
+        body > a:hover::before {
+            left: 100%;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+                padding-bottom: 15px;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            h3 {
+                font-size: 1.4rem;
+            }
+
+            body > div {
+                padding: 20px;
+            }
+
+            p {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            strong {
+                min-width: auto;
+            }
+
+            span {
+                width: 100%;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+    <title>Character</title>
+</head>
+<body>
+<h1>Character's details</h1>
+<div>
+    <h2 th:text="${player.name}"></h2>
+    <p><strong>Lvl:</strong><span th:text="${player.lvl}"></span></p>
+    <p><strong>Class:</strong><span th:text="${player.classType}"></span></p>
+
+    <h3>Dungeon:</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Name:</th>
+            <th>Minimum lvl:</th>
+            <th>Bosses number:</th>
+            <th>Bosses:</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="dungeon: ${player.dungeon}">
+            <td th:text="${dungeon.name}"></td>
+            <td th:text="${dungeon.minimumLvl}"></td>
+            <td th:text="${dungeon.bossesNumber}"></td>
+            <td th:text="${dungeon.bosses}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<a th:href="@{/player/ui/show}">Back to the lobby</a>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Adiciona ícones de classe se necessário
+        const classElement = document.querySelector('p:nth-child(3) span');
+        if (classElement) {
+            const className = classElement.textContent.trim();
+            let icon = '';
+
+            switch(className) {
+                case 'Warrior': icon = 'W'; break;
+                case 'Mage': icon = 'M'; break;
+                case 'Rogue': icon = 'R'; break;
+                case 'Paladin': icon = 'P'; break;
+                case 'Shaman': icon = 'S'; break;
+                case 'Warlock': icon = 'L'; break;
+                case 'Druid': icon = 'D'; break;
+                case 'Priest': icon = 'T'; break;
+                case 'Hunter': icon = 'H'; break;
+                default: icon = 'X';
+            }
+
+            // Adiciona o ícone antes do nome da classe
+            classElement.innerHTML = `<span class="class-icon">${icon}</span> ${className}`;
+        }
+    });
+</script>
+</body>
+</html>
