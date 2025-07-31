@@ -11,6 +11,7 @@ public class PlayersMapper {
         playersModel.setId(playersDTO.getId());
         playersModel.setName(playersDTO.getName());
         playersModel.setLvl(playersDTO.getLvl());
+        playersModel.setClassType(playersDTO.getClassType());
         playersModel.setDungeon(playersDTO.getDungeon());
 
         return playersModel;
@@ -22,6 +23,7 @@ public class PlayersMapper {
         playersDTO.setId(playersModel.getId());
         playersDTO.setName(playersModel.getName());
         playersDTO.setLvl(playersModel.getLvl());
+        playersDTO.setClassType(playersModel.getClassType());
         playersDTO.setDungeon(playersModel.getDungeon());
 
         return playersDTO;

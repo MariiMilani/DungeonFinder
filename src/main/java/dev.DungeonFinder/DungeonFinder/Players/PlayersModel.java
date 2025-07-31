@@ -22,6 +22,9 @@ public class PlayersModel {
 
     private int lvl;
 
+    @Column(name = "class")
+    private String classType;
+
     @ManyToOne
     @JoinColumn(name = "dungeon_id")
     private DungeonModel dungeon;

@@ -15,5 +15,7 @@ public class PlayersDTO {
 
     private int lvl;
 
+    private String classType;
+
     private DungeonModel dungeon;
 }
