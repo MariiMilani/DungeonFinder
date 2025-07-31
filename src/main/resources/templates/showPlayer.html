@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Variáveis de cores WoW */
+    :root {
+        --wow-gold: #c8aa6e;
+        --wow-gold-dark: #8a6b3f;
+        --wow-gold-light: #e6d3a7;
+        --wow-blue: #0d5675;
+        --wow-red: #a52a2a;
+        --wow-dark: #0a0a0a;
+        --wow-darker: #050505;
+        --wow-brown: #1e1309;
+        --wow-bg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23050505"/><path d="M0 50 Q 25 30, 50 50 T 100 50 L100 100 L0 100 Z" fill="%230c0c0c" opacity="0.3"/><path d="M0 30 Q 25 10, 50 30 T 100 30 L100 100 L0 100 Z" fill="%230c0c0c" opacity="0.2"/></svg>');
+    }
+
+    /* Reset e estilos base */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--wow-dark);
+        background-image: var(--wow-bg);
+        background-size: cover;
+        color: var(--wow-gold-light);
+        font-family: 'Montserrat', sans-serif;
+        min-height: 100vh;
+        padding: 20px;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at center, transparent 0%, rgba(10, 10, 10, 0.9) 100%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    body::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, rgba(139, 0, 0, 0.1) 0%, rgba(0, 0, 139, 0.1) 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+        opacity: 0.1;
+        z-index: -1;
+    }
+
+    /* Cabeçalho */
+    h1 {
+        font-family: 'Cinzel', serif;
+        font-weight: 900;
+        font-size: 3.5rem;
+        color: var(--wow-gold);
+        text-shadow: 0 0 10px rgba(200, 170, 110, 0.5),
+                     3px 3px 3px rgba(0, 0, 0, 0.8);
+        letter-spacing: 2px;
+        margin-bottom: 25px;
+        position: relative;
+        text-align: center;
+        padding-bottom: 20px;
+        border-bottom: 2px solid var(--wow-gold-dark);
+        animation: glow 3s infinite alternate;
+    }
+
+    h1::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 3px;
+        background: linear-gradient(to right, transparent, var(--wow-gold), transparent);
+        border-radius: 50%;
+    }
+
+    @keyframes glow {
+        0% { text-shadow: 0 0 10px rgba(200, 170, 110, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.8); }
+        100% { text-shadow: 0 0 20px rgba(200, 170, 110, 0.8), 3px 3px 5px rgba(0, 0, 0, 0.8); }
+    }
+
+    /* Botão de adicionar jogador */
+    a[th\\:href] {
+        display: inline-block;
+        padding: 12px 25px;
+        background: linear-gradient(to bottom, var(--wow-gold), var(--wow-gold-dark));
+        color: var(--wow-dark);
+        font-family: 'Cinzel', serif;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5),
+                    0 0 10px rgba(200, 170, 110, 0.3) inset;
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+
+    a[th\\:href]:hover {
+        background: linear-gradient(to bottom, var(--wow-gold-light), var(--wow-gold));
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6),
+                    0 0 15px rgba(200, 170, 110, 0.5) inset;
+        transform: translateY(-2px);
+    }
+
+    a[th\\:href]:active {
+        transform: translateY(1px);
+    }
+
+    a[th\\:href]::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: all 0.5s;
+    }
+
+    a[th\\:href]:hover::before {
+        left: 100%;
+    }
+
+    /* Container da tabela */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(20, 12, 4, 0.7);
+        position: relative;
+        margin: 30px 0;
+        overflow: hidden;
+        border-radius: 6px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        border: 2px solid var(--wow-gold-dark);
+    }
+
+    table::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(to right, transparent, var(--wow-gold), transparent);
+        box-shadow: 0 0 10px var(--wow-gold);
+        z-index: 1;
+    }
+
+    table::after {
+        content: "\f6d9";
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        font-size: 2rem;
+        color: var(--wow-gold);
+        opacity: 0.1;
+        z-index: 0;
+    }
+
+    /* Cabeçalho da tabela */
+    thead {
+        background: linear-gradient(to bottom, var(--wow-gold-dark), var(--wow-brown));
+        border-bottom: 2px solid var(--wow-gold);
+    }
+
+    th {
+        padding: 15px 10px;
+        text-align: left;
+        color: var(--wow-gold-light);
+        font-family: 'Cinzel', serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 1.1rem;
+        position: relative;
+    }
+
+    th:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 10%;
+        height: 80%;
+        width: 1px;
+        background: linear-gradient(to bottom, transparent, var(--wow-gold), transparent);
+    }
+
+    /* Linhas da tabela */
+    tbody tr {
+        border-bottom: 1px solid rgba(138, 107, 63, 0.2);
+        transition: background-color 0.3s ease;
+        position: relative;
+    }
+
+    tbody tr:hover {
+        background-color: rgba(138, 107, 63, 0.15);
+    }
+
+    td {
+        padding: 12px 10px;
+        color: var(--wow-gold-light);
+        position: relative;
+    }
+
+    /* Ícones de classe */
+    td:nth-child(4)::before {
+        content: "";
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-color: var(--wow-gold-dark);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 24px;
+        margin-right: 8px;
+        font-weight: bold;
+        font-size: 0.8rem;
+    }
+
+    /* Estilização da coluna de dungeon */
+    td:nth-child(5) span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+    }
+
+    td:nth-child(5) span#span_Container {
+        background: rgba(46, 125, 50, 0.2);
+        color: #81c784;
+        border: 1px solid rgba(129, 199, 132, 0.3);
+    }
+
+    td:nth-child(5) span#span_Container::before {
+        content: "\f6d9";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    td:nth-child(5) span:not(#span_Container) {
+        background: rgba(158, 158, 158, 0.2);
+        color: #bdbdbd;
+        border: 1px solid rgba(189, 189, 189, 0.3);
+    }
+
+    td:nth-child(5) span:not(#span_Container)::before {
+        content: "\f00d";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    /* Links de ação */
+    td:nth-child(6) a,
+    td:nth-child(7) a {
+        padding: 8px 15px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s ease;
+    }
+
+    td:nth-child(6) a {
+        background: rgba(13, 86, 117, 0.3);
+        color: #4fc3f7;
+        border: 1px solid rgba(79, 195, 247, 0.3);
+    }
+
+    td:nth-child(6) a:hover {
+        background: rgba(13, 86, 117, 0.5);
+        border: 1px solid rgba(79, 195, 247, 0.6);
+        box-shadow: 0 0 10px rgba(79, 195, 247, 0.3);
+    }
+
+    td:nth-child(6) a::before {
+        content: "\f06e";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+    }
+
+    td:nth-child(7) a {
+        background: rgba(165, 42, 42, 0.3);
+        color: #ff6b6b;
+        border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+
+    td:nth-child(7) a:hover {
+        background: rgba(165, 42, 42, 0.5);
+        border: 1px solid rgba(255, 107, 107, 0.6);
+        box-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+    }
+
+    td:nth-child(7) a::before {
+        content: "\f714";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+    }
+
+    /* IDs e níveis */
+    td:first-child {
+        color: #bdbdbd;
+        font-family: monospace;
+        font-weight: bold;
+    }
+
+    td:nth-child(3) {
+        font-weight: bold;
+        color: var(--wow-gold);
+        position: relative;
+        padding-left: 30px;
+    }
+
+    td:nth-child(3)::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 26px;
+        height: 26px;
+        background: linear-gradient(to bottom, var(--wow-gold), var(--wow-gold-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--wow-dark);
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    /* Rodapé implícito */
+    table + table {
+        margin-top: 40px;
+    }
+
+    table::after {
+        content: "World of Warcraft Player Queue System • For the Horde!";
+        display: block;
+        text-align: center;
+        padding-top: 20px;
+        margin-top: 30px;
+        border-top: 1px solid var(--wow-gold-dark);
+        color: var(--wow-gold);
+        font-size: 0.9rem;
+        position: relative;
+        width: 100%;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        body {
+            padding: 10px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            padding-bottom: 15px;
+        }
+
+        table {
+            display: block;
+            overflow-x: auto;
+        }
+
+        td:nth-child(6) a,
+        td:nth-child(7) a {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+        }
+
+        td:nth-child(4)::before {
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 0.7rem;
+        }
+
+        td:nth-child(3)::before {
+            width: 22px;
+            height: 22px;
+        }
+    }
+</style>
+<body>
+    <h1>Player's Queue</h1>
+    <a th.href="@{/player/ui/add}">Add a new player</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Lvl</th>
+        <th>Class</th>
+        <th>Dungeon</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="player: ${player}">
+        <td th:text="${player.id}"></td>
+        <td th:text="${player.name}"></td>
+        <td th:text="${player.lvl}"></td>
+        <td th:text="${player.class}"></td>
+        <td>
+            <span id="span_Container" th:if="${player.dungeon}">Dungeon: <span th:text="${player.dungeon.name}"></span></span>
+            <span th:if="${player.dungeon == null}">Is not in a dungeon</span>
+        </td>
+        <td> <a th:href="@{/player/ui/show/{id}(id = ${player.id})}">See more details</a></td>
+        <td> <a th:href="@{/player/ui/delete/{id}(id = ${player.id})}">Delete</a></td>
+
+    </tr>
+    </tbody>
+</table>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Adiciona ícones de classe dinamicamente
+        document.querySelectorAll('td:nth-child(4)').forEach(td => {
+            const className = td.textContent.trim();
+            let icon = '';
+
+            switch(className) {
+                case 'Warrior': icon = 'W'; break;
+                case 'Mage': icon = 'M'; break;
+                case 'Rogue': icon = 'R'; break;
+                case 'Paladin': icon = 'P'; break;
+                case 'Shaman': icon = 'H'; break;
+                case 'Warlock': icon = 'L'; break;
+                case 'Druid': icon = 'D'; break;
+                case 'Priest': icon = 'C'; break;
+                case 'Hunter': icon = 'N'; break;
+                default: icon = 'X';
+            }
+
+            td.setAttribute('dat<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Adiciona ícones de classe dinamicamente
+    document.querySelectorAll('td:nth-child(4)').forEach(td => {
+        const className = td.textContent.trim();
+        let icon = '';
+
+        switch(className) {
+            case 'Warrior': icon = 'W'; break;
+            case 'Mage': icon = 'M'; break;
+            case 'Rogue': icon = 'R'; break;
+            case 'Paladin': icon = 'P'; break;
+            case 'Shaman': icon = 'H'; break;
+            case 'Warlock': icon = 'L'; break;
+            case 'Druid': icon = 'D'; break;
+            case 'Priest': icon = 'C'; break;
+            case 'Hunter': icon = 'N'; break;
+            default: icon = 'X';
+        }
+
+        td.setAttribute('data-class-icon', icon);
+    });
+
+    // Estiliza os níveis
+    document.querySelectorAll('td:nth-child(3)').forEach(td => {
+        const level = td.textContent.trim();
+        td.setAttribute('data-level', level);
+    });
+});
+</script>
+</html>
