@@ -36,7 +36,7 @@ public class PlayersService {
     public PlayersDTO addPlayer(PlayersDTO playersDTO){
         Long dungeonID = playersDTO.getDungeon().getId();
         Optional<DungeonModel> dungeonModel = dungeonRepository.findById(dungeonID);
-        if(dungeonModel.get().lvlRequired() < playersDTO.getLvl()){
+        if(dungeonModel.get().lvlRequired() <= playersDTO.getLvl()){
             if(dungeonModel.get().qtdPlayers() < 5){
                 PlayersModel player = playersMapper.map(playersDTO);
                 player = playersRepository.save(player);
