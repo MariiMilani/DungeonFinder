@@ -20,7 +20,7 @@ public class PlayersController {
         this.playersService = playersService;
     }
 
-    @GetMapping("/listar")
+    @GetMapping("/show")
     @Operation (summary = "Lista todos os players",
             description = "Lista todos os players cadastrados no banco de dados")
     public ResponseEntity<List<PlayersDTO>> showPlayer(){
@@ -28,7 +28,7 @@ public class PlayersController {
         return ResponseEntity.ok(player);
     }
 
-    @GetMapping("/listar/{id}")
+    @GetMapping("/show/{id}")
     @Operation(summary = "Lista o player selecionado no ID",
             description = "Rota lista o player selecionado no ID conforme banco de dados")
     public ResponseEntity<?>  showPlayerID (
