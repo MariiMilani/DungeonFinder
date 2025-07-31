@@ -1,0 +1,2 @@
+ALTER TABLE tb_player
+ADD COLUMN class VARCHAR(50);
