@@ -1,31 +1,26 @@
 package dev.DungeonFinder.DungeonFinder.Players;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PlayersMapper {
 
+    private final ModelMapper modelMapper;
+
+    public PlayersMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     public PlayersModel map(PlayersDTO playersDTO){
-        PlayersModel playersModel = new PlayersModel();
-
-        playersModel.setId(playersDTO.getId());
-        playersModel.setName(playersDTO.getName());
-        playersModel.setLvl(playersDTO.getLvl());
-        playersModel.setClassType(playersDTO.getClassType());
-        playersModel.setDungeon(playersDTO.getDungeon());
-
-        return playersModel;
+        return modelMapper.map(playersDTO, PlayersModel.class);
     }
 
     public PlayersDTO map(PlayersModel playersModel){
-        PlayersDTO playersDTO = new PlayersDTO();
+        return modelMapper.map(playersModel, PlayersDTO.class);
+    }
 
-        playersDTO.setId(playersModel.getId());
-        playersDTO.setName(playersModel.getName());
-        playersDTO.setLvl(playersModel.getLvl());
-        playersDTO.setClassType(playersModel.getClassType());
-        playersDTO.setDungeon(playersModel.getDungeon());
-
-        return playersDTO;
+    public void updateFromDTO(PlayersDTO playersDTO, PlayersModel playersModel){
+        modelMapper.map(playersDTO, playersModel);
     }
 }

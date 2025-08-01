@@ -53,4 +53,17 @@ public class PlayersService {
     public void deletePlayer(Long id){
         playersRepository.deleteById(id);
     }
+
+    public PlayersDTO updatePlayer(Long id, PlayersDTO playersDTO){
+        Optional<PlayersModel> playerID = playersRepository.findById(id);
+
+        if(playerID.isPresent()){
+            PlayersModel playerToUpdate = playerID.get();
+            playersMapper.updateFromDTO(playersDTO, playerToUpdate);
+
+            PlayersModel updatedPlayer = playersRepository.save(playerToUpdate);
+            return playersMapper.map(updatedPlayer);
+        }
+        return null;
+    }
 }

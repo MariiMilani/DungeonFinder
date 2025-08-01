@@ -47,15 +47,28 @@ public class PlayersControllerUI {
     }
 
     @GetMapping("/add")
-    public String addPlayer(Model model){
+    public String addPlayer(Model model) {
         model.addAttribute("player", new PlayersDTO());
         return "addPlayer";
     }
 
     @PostMapping("/save")
-    public String saveNewPlayer(@ModelAttribute PlayersDTO player, RedirectAttributes redirectAttributes){
+    public String saveNewPlayer(@ModelAttribute PlayersDTO player, RedirectAttributes redirectAttributes) {
         playersService.addPlayer(player);
-        redirectAttributes.addFlashAttribute("message","Player created");
+        redirectAttributes.addFlashAttribute("message", "Player created");
+        return "redirect:/player/ui/show";
+    }
+
+    @GetMapping("/update/{id}")
+    public String updatePlayer(@PathVariable Long id, Model model) {
+        model.getAttribute("player");
+        return "updatePlayer";
+    }
+
+    @PatchMapping("/change")
+    public String changePlayer(@ModelAttribute PlayersDTO player, RedirectAttributes redirectAttributes) {
+        playersService.updatePlayer(player.getId(),player);
+        redirectAttributes.addFlashAttribute("message","Player updated");
         return "redirect:/player/ui/show";
     }
 }

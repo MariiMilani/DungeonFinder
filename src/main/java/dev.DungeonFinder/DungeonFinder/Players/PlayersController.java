@@ -66,4 +66,14 @@ public class PlayersController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("Player not found");
     }
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<?> updatePlayer(@PathVariable Long id, @RequestBody PlayersDTO changedPlayer){
+        if(playersService.showPlayerID(id) != null){
+            PlayersDTO player = playersService.updatePlayer(id, changedPlayer);
+            return ResponseEntity.ok(player);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Player not found");
+    }
 }
