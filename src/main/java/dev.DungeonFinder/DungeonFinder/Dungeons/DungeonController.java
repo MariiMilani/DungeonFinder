@@ -18,7 +18,7 @@ public class DungeonController {
         this.dungeonService = dungeonService;
     }
 
-    @GetMapping("/listar")
+    @GetMapping("/show")
     @Operation(summary = "Lista todas as Dungeons",
             description = "Rota lista todas as Dungeons cadastradas no banco de dados")
     public ResponseEntity<List<DungeonDTO>> showDungeons(){
@@ -26,7 +26,7 @@ public class DungeonController {
         return ResponseEntity.ok(dungeons);
     }
 
-    @GetMapping("/listar/{id}")
+    @GetMapping("/show/{id}")
     @Operation(summary = "Lista a dungeon selecionada no ID",
     description = "Rota lista a dungeon selecionada no ID conforme banco de dados")
     public ResponseEntity<?> showDungeonID(
